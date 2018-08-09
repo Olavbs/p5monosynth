@@ -1,62 +1,70 @@
 class Oscillator extends p5.Oscillator {
-	constructor() {
+	constructor(x,y) {
 		super();
+		this.x = x;
+		this.y = y;
 		this.init();
 	}
 	init() {
 		this.setType('sawtooth');
-		this.freq(440);
+		this.frequency = 440;
+		this.freq(this.frequency);
 		this.amp(0);
 		this.start();
 
 		this.label = "VCO";
-		this.currentFreq = null;
-		this.targetFreq = null;
-		this.portamento = 6;
+		this.octave = 0;
+		this.tune = 0;
+		this.fine = 0;
 		this.volume = 0;
 
 		this.i = 0;
 
-		this.shapeKnob = new Knob(0,3);
+		this.octKnob = new Knob("Octave",this.x+30,this.y+50,-4,4,0,true);
+		this.tuneKnob = new Knob("Tune",this.x+30,this.y+100,-12,12,0,true);
+		this.fineKnob = new Knob("Fine",this.x+30,this.y+150,-100,100,0,false);
 	}
-	tick() {
-		if( abs(this.currentFreq - this.targetFreq) < this.portamento ) {
-			this.currentFreq = this.targetFreq;
-		} else if( this.currentFreq < this.targetFreq ) {
-			this.currentFreq += this.portamento;
-		} else if( this.currentFreq > this.targetFreq ) {
-			this.currentFreq -= this.portamento;
-		}
-		this.freq( this.currentFreq );	
-		this.amp(this.volume, 0.01);
+	getTune() {
+		// for formula :  https://pages.mtu.edu/~suits/NoteFreqCalcs.html
+		return pow( pow(2, 1/12), this.tuneKnob.value ) * pow( pow(2, 1/12), this.fineKnob.value/50);	
+	}
 
+	tick() {
+		this.freq(this.calculateFrequency());	
 	}
 	setFreq( freq ) {
-		while( this.i < 10) {
-			this.i++;
-			console.log("hey");
-			this.targetFreq = freq;
-		}
-		this.i = 0;
-
+		this.frequency = freq;	
+		this.freq(this.calculateFrequency());
+	}
+	calculateFrequency() {
+		this.octave = pow( pow(2, 1/12), this.octKnob.value*12 );
+		this.tune = pow( pow(2, 1/12), this.tuneKnob.value );
+		this.fine = pow( pow(2, 1/12), this.fineKnob.value/50 );
+		return this.frequency * this.octave * this.tune * this.fine;
 	}
 	vol( vol ) {
-		this.volume = vol;
+		this.amp( vol, 0.01 );
 	}
 	setLabel( label ) {
 		this.label = label;
 	}
-	drawPanel(x, y) {
+	drawPanel() {
 		noFill();
-		stroke(150);
-		strokeWeight(2);
-		rect(x,y,200,150);
+		stroke(255);
+		strokeWeight(1);
+		rect(this.x,this.y,250,200);
 
 		strokeWeight(0);
+		fill(255);
+		rect(this.x, this.y, 250, 20);
+		fill(80,100,115);
+		textAlign(CENTER);
 		textSize(14);
-		fill(150);
-		text(this.label, x + 4, y + 16 );
+		text(this.label, this.x + 125, this.y+16 );
 
-		this.shapeKnob.draw( x + 30, y + 45 );
+		this.octKnob.draw();
+		this.tuneKnob.draw();
+		this.fineKnob.draw();
+
 	}
 }
