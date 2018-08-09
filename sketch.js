@@ -21,6 +21,10 @@ function setup() {
 	osc2.setLabel("VCO 2");
 	osc3 = new Oscillator(10, 430);
 	osc3.setLabel("VCO 3");
+
+	osc1.octKnob.value = -2;
+	osc2.fineKnob.value = -4;
+	osc3.fineKnob.value = 4;
 }
 
 function draw() {
