@@ -16,13 +16,14 @@ class Oscillator extends p5.Oscillator {
 		this.octave = 0;
 		this.tune = 0;
 		this.fine = 0;
-		this.volume = 0;
+		this.volume = false;
 
 		this.i = 0;
 
 		this.octKnob = new Knob("Octave",this.x+30,this.y+50,-4,4,0,true);
 		this.tuneKnob = new Knob("Tune",this.x+30,this.y+100,-12,12,0,true);
 		this.fineKnob = new Knob("Fine",this.x+30,this.y+150,-100,100,0,false);
+		this.sineSlider = new Slider("Sin",this.x+60,this.y+35,130,0,0.1,0.1,false);
 	}
 	getTune() {
 		// for formula :  https://pages.mtu.edu/~suits/NoteFreqCalcs.html
@@ -31,6 +32,7 @@ class Oscillator extends p5.Oscillator {
 
 	tick() {
 		this.freq(this.calculateFrequency());	
+		this.vol();
 	}
 	setFreq( freq ) {
 		this.frequency = freq;	
@@ -42,8 +44,10 @@ class Oscillator extends p5.Oscillator {
 		this.fine = pow( pow(2, 1/12), this.fineKnob.value/50 );
 		return this.frequency * this.octave * this.tune * this.fine;
 	}
-	vol( vol ) {
-		this.amp( vol, 0.01 );
+	vol() {
+		if ( this.volume ) {
+		this.amp(this.sineSlider.value, 0.01 );
+		} else { this.amp(0,0.01); }
 	}
 	setLabel( label ) {
 		this.label = label;
@@ -65,6 +69,8 @@ class Oscillator extends p5.Oscillator {
 		this.octKnob.draw();
 		this.tuneKnob.draw();
 		this.fineKnob.draw();
+
+		this.sineSlider.draw();
 
 	}
 }

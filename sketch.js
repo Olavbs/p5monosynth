@@ -56,16 +56,22 @@ function drawKeydata() {
 }
 function triggerNoteOn() {
 	osc1.setFreq( ffreq * pow( 2, keyboard.octave-1 ) * keyboard.pitch );
-	osc1.vol( 0.1 ); // REPLACE WITH AMP
+	osc1.volume = true;
+	osc1.vol(); // REPLACE WITH AMP
 	osc2.setFreq( ffreq * pow( 2, keyboard.octave-1 ) * keyboard.pitch );
-	osc2.vol( 0.1 ); // REPLACE WITH AMP
+	osc2.volume = true;
+	osc2.vol(); // REPLACE WITH AMP
 	osc3.setFreq( ffreq * pow( 2, keyboard.octave-1 ) * keyboard.pitch );
-	osc3.vol( 0.1 ); // REPLACE WITH AMP
+	osc3.volume = true;
+	osc3.vol(); // REPLACE WITH AMP
 }
 function triggerNoteOff(){
-	osc1.vol( 0 );
-	osc2.vol( 0 );
-	osc3.vol( 0 );
+	osc1.volume = false;
+	osc1.vol();
+	osc2.volume = false;
+	osc2.vol();
+	osc3.volume = false;
+	osc3.vol();
 }
 function keyPressed() {
 	keyboard.keyTrigger( keyCode );
