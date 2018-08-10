@@ -23,8 +23,22 @@ function setup() {
 	osc3.setLabel("VCO 3");
 
 	osc1.octKnob.value = -2;
-	osc2.fineKnob.value = -4;
-	osc3.fineKnob.value = 4;
+	osc1.sinSlider.value = 0.1;
+	osc1.triSlider.value = 0.05;
+	osc1.sqrSlider.value = 0.05;
+ 
+ 	osc2.octKnob.value = 0;
+	osc2.tuneKnob.value = 4;
+	osc2.fineKnob.value = -7;
+	osc2.triSlider.value = 0.1;
+	osc2.sawSlider.value = 0.1;
+	osc2.nosSlider.value = 0.015;
+
+	osc3.octKnob.value = -1;
+	osc3.tuneKnob.value = 7;
+	osc3.fineKnob.value = -1;
+	osc3.triSlider.value = 0.1;
+	osc3.sawSlider.value = 0.1;
 }
 
 function draw() {
